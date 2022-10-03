@@ -9,6 +9,9 @@ class BaseballGame {
 		$SUBMIT_BUTTON.addEventListener('click', e => {
 			e.preventDefault()
 			const userInput = $USER_INPUT.value
+			if (this.isValidInput(userInput)) {
+				this.play(this.computerInput, userInput)
+			}
 		})
 	}
 
@@ -60,6 +63,19 @@ class BaseballGame {
 			}
 		}
 		return true
+	}
+	getStrikeCount(computerInput, userInput) {
+		let strikeCount = 0
+		for (let i = 0; i < MAX_NUMBER_LENGTH; i++) {
+			if (computerInput[i] === userInput[i]) strikeCount++
+		}
+
+		return strikeCount
+	}
+	play(computerInput, userInput) {
+		let strikeCount = getStrikeCount(computerInput, userInput)
+
+		return ``
 	}
 }
 
