@@ -9,10 +9,7 @@ class BaseballGame {
 
 		$SUBMIT_BUTTON.addEventListener('click', e => {
 			e.preventDefault()
-			const userInput = $USER_INPUT.value
-			if (this.isValidInput(userInput)) {
-				$RESULT.innerHTML = this.play(this.computerInput, userInput)
-			}
+			this.updateGameResult()
 			if ($RESULT.innerHTML === GAME_WIN_MSG) {
 				this.showRestartButton()
 			}
@@ -111,6 +108,12 @@ class BaseballGame {
 	}
 	hideRestartButton() {
 		$RESTART_BUTTON.style.display = 'none'
+	}
+	updateGameResult() {
+		const userInput = $USER_INPUT.value
+		if (this.isValidInput(userInput)) {
+			$RESULT.innerHTML = this.play(this.computerInput, userInput)
+		}
 	}
 }
 
