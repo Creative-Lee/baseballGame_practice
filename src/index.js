@@ -1,17 +1,22 @@
-import { $SUBMIT_BUTTON, $USER_INPUT, $RESULT } from './constants/dom.js'
+import { $SUBMIT_BUTTON, $USER_INPUT, $RESULT, $RESTART_BUTTON } from './constants/dom.js'
 import { MAX_NUMBER_RANGE, MIN_NUMBER_RANGE, MAX_NUMBER_LENGTH } from './constants/condition.js'
-import { ERROR_MSG } from './constants/message.js'
+import { ERROR_MSG, GAME_WIN_MSG } from './constants/message.js'
 
 class BaseballGame {
 	constructor() {
 		this.computerInput = this.getComputerInput()
 		this.gameResultMsg = ''
+		this.hideRestartButton()
 
 		$SUBMIT_BUTTON.addEventListener('click', e => {
 			e.preventDefault()
 			const userInput = $USER_INPUT.value
 			if (this.isValidInput(userInput)) {
-				$RESULT.innerHTML = this.play(this.computerInput, userInput)
+				this.gameResultMsg = this.play(this.computerInput, userInput)
+				$RESULT.innerHTML = this.gameResultMsg
+			}
+			if (this.gameResultMsg === GAME_WIN_MSG) {
+				this.showRestartButton()
 			}
 		})
 	}
@@ -81,7 +86,7 @@ class BaseballGame {
 		return ballCount
 	}
 	getGameResultMsg(strikeCount, ballCount) {
-		if (strikeCount === MAX_NUMBER_LENGTH) return '⚾정답을 맞추셨습니다⚾'
+		if (strikeCount === MAX_NUMBER_LENGTH) return GAME_WIN_MSG
 		if (!strikeCount && !ballCount) return `낫싱`
 		if (strikeCount && ballCount) return `${ballCount}볼 ${strikeCount}스트라이크`
 		if (strikeCount && !ballCount) return `${strikeCount}스트라이크`
@@ -92,6 +97,12 @@ class BaseballGame {
 		let ballCount = this.getBallCount(computerInput, userInput) - strikeCount
 
 		return this.getGameResultMsg(strikeCount, ballCount)
+	}
+	showRestartButton() {
+		$RESTART_BUTTON.style.display = 'block'
+	}
+	hideRestartButton() {
+		$RESTART_BUTTON.style.display = 'none'
 	}
 }
 
