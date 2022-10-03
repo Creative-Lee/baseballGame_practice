@@ -7,9 +7,10 @@ class BaseballGame {
 		})
 	}
 
-	// play(randomNumber, userInput) {
-	// 	return '결과 값 String'
-	// }
+	hasOnlyNumber(userInput) {
+		const splitedUserInput = userInput.split('')
+		return splitedUserInput.every(eachInput => !isNaN(+eachInput))
+	}
 }
 
 new BaseballGame()
