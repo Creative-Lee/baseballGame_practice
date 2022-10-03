@@ -4,6 +4,7 @@ import { ERROR_MSG, GAME_WIN_MSG } from './constants/message.js'
 
 class BaseballGame {
 	constructor() {
+		this.computerInput
 		this.init()
 
 		$SUBMIT_BUTTON.addEventListener('click', e => {
@@ -16,11 +17,16 @@ class BaseballGame {
 				this.showRestartButton()
 			}
 		})
+
+		$RESTART_BUTTON.addEventListener('click', e => {
+			this.init()
+		})
 	}
 
 	init() {
 		this.hideRestartButton()
 		$RESULT.innerHTML = '게임을 시작하세요!'
+		$USER_INPUT.value = ''
 		this.computerInput = this.getComputerInput()
 	}
 	getComputerInput() {
