@@ -5,12 +5,15 @@ class BaseballGame {
 	constructor() {
 		$SUBMIT_BUTTON.addEventListener('click', e => {
 			e.preventDefault()
-			console.log(this.hasOnlyNumber($USER_INPUT.value))
 		})
 	}
 
 	hasOnlyNumber(userInput) {
 		const splitedUserInput = userInput.split('')
+
+		if (splitedUserInput.includes(' ')) {
+			return false
+		}
 		return splitedUserInput.every(eachInput => !isNaN(+eachInput))
 	}
 
