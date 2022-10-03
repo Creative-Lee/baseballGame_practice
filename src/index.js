@@ -4,23 +4,25 @@ import { ERROR_MSG, GAME_WIN_MSG } from './constants/message.js'
 
 class BaseballGame {
 	constructor() {
-		this.computerInput = this.getComputerInput()
-		this.gameResultMsg = ''
-		this.hideRestartButton()
+		this.init()
 
 		$SUBMIT_BUTTON.addEventListener('click', e => {
 			e.preventDefault()
 			const userInput = $USER_INPUT.value
 			if (this.isValidInput(userInput)) {
-				this.gameResultMsg = this.play(this.computerInput, userInput)
-				$RESULT.innerHTML = this.gameResultMsg
+				$RESULT.innerHTML = this.play(this.computerInput, userInput)
 			}
-			if (this.gameResultMsg === GAME_WIN_MSG) {
+			if ($RESULT.innerHTML === GAME_WIN_MSG) {
 				this.showRestartButton()
 			}
 		})
 	}
 
+	init() {
+		this.hideRestartButton()
+		$RESULT.innerHTML = '게임을 시작하세요!'
+		this.computerInput = this.getComputerInput()
+	}
 	getComputerInput() {
 		let randomNum = new Set()
 		while (randomNum.size !== MAX_NUMBER_LENGTH) {
