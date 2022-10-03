@@ -81,7 +81,7 @@ class BaseballGame {
 	}
 	play(computerInput, userInput) {
 		let strikeCount = this.getStrikeCount(computerInput, userInput)
-		let ballCount = this.getBallCount(computerInput, userInput)
+		let ballCount = this.getBallCount(computerInput, userInput) - strikeCount
 	}
 }
 
