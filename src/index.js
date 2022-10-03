@@ -5,6 +5,7 @@ class BaseballGame {
 	constructor() {
 		$SUBMIT_BUTTON.addEventListener('click', e => {
 			e.preventDefault()
+			console.log(this.hasOnlyNumber($USER_INPUT.value))
 		})
 	}
 
@@ -15,6 +16,10 @@ class BaseballGame {
 
 	hasValidLength(userInput) {
 		return userInput.length === MAX_NUMBER_LENGTH
+	}
+
+	hasUniqueNumber(userInput) {
+		return [...new Set(userInput.split(''))].length === MAX_NUMBER_LENGTH
 	}
 }
 
