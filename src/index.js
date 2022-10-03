@@ -4,12 +4,22 @@ import { ERROR_MSG } from './constants/message.js'
 
 class BaseballGame {
 	constructor() {
+		this.randomNumber = this.getRandomNumber()
+
 		$SUBMIT_BUTTON.addEventListener('click', e => {
 			e.preventDefault()
 			const userInput = $USER_INPUT.value
 		})
 	}
 
+	getRandomNumber() {
+		let randomNum = new Set()
+		while (randomNum.size !== MAX_NUMBER_LENGTH) {
+			randomNum.add(MissionUtils.Random.pickNumberInRange(MIN_NUMBER_RANGE, MAX_NUMBER_RANGE))
+		}
+
+		return [...randomNum].join('')
+	}
 	isValidInput(userInput) {
 		if (!this.hasOnlyNumber(userInput)) {
 			alert(ERROR_MSG.TYPE_ERR)
