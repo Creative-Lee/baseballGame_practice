@@ -1,16 +1,17 @@
-import { $SUBMIT_BUTTON, $USER_INPUT } from './constants/dom.js'
+import { $SUBMIT_BUTTON, $USER_INPUT, $RESULT } from './constants/dom.js'
 import { MAX_NUMBER_RANGE, MIN_NUMBER_RANGE, MAX_NUMBER_LENGTH } from './constants/condition.js'
 import { ERROR_MSG } from './constants/message.js'
 
 class BaseballGame {
 	constructor() {
 		this.computerInput = this.getComputerInput()
+		this.gameResultMsg = ''
 
 		$SUBMIT_BUTTON.addEventListener('click', e => {
 			e.preventDefault()
 			const userInput = $USER_INPUT.value
 			if (this.isValidInput(userInput)) {
-				this.play(this.computerInput, userInput)
+				$RESULT.innerHTML = this.play(this.computerInput, userInput)
 			}
 		})
 	}
@@ -79,9 +80,18 @@ class BaseballGame {
 		}
 		return ballCount
 	}
+	getGameResultMsg(strikeCount, ballCount) {
+		if (strikeCount === MAX_NUMBER_LENGTH) return '⚾정답을 맞추셨습니다⚾'
+		if (!strikeCount && !ballCount) return `낫싱`
+		if (strikeCount && ballCount) return `${ballCount}볼 ${strikeCount}스트라이크`
+		if (strikeCount && !ballCount) return `${strikeCount}스트라이크`
+		return `${ballCount}볼`
+	}
 	play(computerInput, userInput) {
 		let strikeCount = this.getStrikeCount(computerInput, userInput)
 		let ballCount = this.getBallCount(computerInput, userInput) - strikeCount
+
+		return this.getGameResultMsg(strikeCount, ballCount)
 	}
 }
 
