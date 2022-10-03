@@ -4,7 +4,7 @@ import { ERROR_MSG } from './constants/message.js'
 
 class BaseballGame {
 	constructor() {
-		this.randomNumber = this.getRandomNumber()
+		this.computerInput = this.getComputerInput()
 
 		$SUBMIT_BUTTON.addEventListener('click', e => {
 			e.preventDefault()
@@ -12,7 +12,7 @@ class BaseballGame {
 		})
 	}
 
-	getRandomNumber() {
+	getComputerInput() {
 		let randomNum = new Set()
 		while (randomNum.size !== MAX_NUMBER_LENGTH) {
 			randomNum.add(MissionUtils.Random.pickNumberInRange(MIN_NUMBER_RANGE, MAX_NUMBER_RANGE))
