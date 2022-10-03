@@ -72,10 +72,16 @@ class BaseballGame {
 
 		return strikeCount
 	}
+	getBallCount(computerInput, userInput) {
+		let ballCount = 0
+		for (let num of userInput) {
+			if (computerInput.includes(num)) ballCount++
+		}
+		return ballCount
+	}
 	play(computerInput, userInput) {
-		let strikeCount = getStrikeCount(computerInput, userInput)
-
-		return ``
+		let strikeCount = this.getStrikeCount(computerInput, userInput)
+		let ballCount = this.getBallCount(computerInput, userInput)
 	}
 }
 
