@@ -4,9 +4,10 @@ import { ERROR_MSG, GAME_WIN_MSG } from './constants/message.js'
 
 class BaseballGame {
 	constructor() {
-		this.initGame()
+		this.computerInput
 		this.strikeCount
 		this.ballCount
+		this.initGame()
 
 		$SUBMIT_BUTTON.addEventListener('click', e => {
 			e.preventDefault()
@@ -16,11 +17,13 @@ class BaseballGame {
 			}
 		})
 
-		$RESTART_BUTTON.addEventListener('click', this.initGame)
+		$RESTART_BUTTON.addEventListener('click', () => this.initGame())
 	}
 
 	initGame() {
 		this.computerInput = this.generateComputerInput()
+		this.strikeCount = 0
+		this.ballCount = 0
 		this.hideRestartButton()
 		this.initUserInput()
 		this.initResultText()
