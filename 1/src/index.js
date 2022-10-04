@@ -4,15 +4,13 @@ import { ERROR_MSG, GAME_WIN_MSG } from './constants/message.js'
 
 class BaseballGame {
 	constructor() {
-		this.computerInput
-		this.strikeCount
-		this.ballCount
 		this.initGame()
 
 		$SUBMIT_BUTTON.addEventListener('click', e => {
 			e.preventDefault()
 			this.updateGameResult()
-			if (this.strikeCount === MAX_NUMBER_LENGTH) {
+			this.isGameOver = this.strikeCount === MAX_NUMBER_LENGTH
+			if (this.isGameOver) {
 				this.showRestartButton()
 			}
 		})
@@ -24,6 +22,7 @@ class BaseballGame {
 		this.computerInput = this.generateComputerInput()
 		this.strikeCount = 0
 		this.ballCount = 0
+		this.isGameOver = false
 		this.hideRestartButton()
 		this.initUserInput()
 		this.initResultText()
@@ -113,13 +112,13 @@ class BaseballGame {
 
 		return this.getGameResultMsg(this.strikeCount, this.ballCount)
 	}
-
 	updateGameResult() {
 		const userInput = $USER_INPUT.value
 		if (this.isValidInput(userInput)) {
 			$RESULT.innerHTML = this.play(this.computerInput, userInput)
 		}
 	}
+
 	showRestartButton() {
 		$RESTART_BUTTON.style.display = 'block'
 	}
