@@ -20,7 +20,7 @@ class BaseballGame {
 	}
 
 	initGame() {
-		this.computerInput = this.getComputerInput()
+		this.computerInput = this.generateComputerInput()
 		this.hideRestartButton()
 		this.initUserInput()
 		this.initResultText()
@@ -31,7 +31,7 @@ class BaseballGame {
 	initResultText() {
 		$RESULT.innerHTML = '게임을 시작하세요!'
 	}
-	getComputerInput() {
+	generateComputerInput() {
 		let randomNum = new Set()
 		while (randomNum.size !== MAX_NUMBER_LENGTH) {
 			randomNum.add(MissionUtils.Random.pickNumberInRange(MIN_NUMBER_RANGE, MAX_NUMBER_RANGE))
