@@ -5,18 +5,18 @@ import { ERROR_MSG, GAME_WIN_MSG } from './constants/message.js'
 class BaseballGame {
 	constructor() {
 		this.initGame()
+		this.strikeCount
+		this.ballCount
 
 		$SUBMIT_BUTTON.addEventListener('click', e => {
 			e.preventDefault()
 			this.updateGameResult()
-			if ($RESULT.innerHTML === GAME_WIN_MSG) {
+			if (this.strikeCount === MAX_NUMBER_LENGTH) {
 				this.showRestartButton()
 			}
 		})
 
-		$RESTART_BUTTON.addEventListener('click', e => {
-			this.initGame()
-		})
+		$RESTART_BUTTON.addEventListener('click', this.initGame)
 	}
 
 	initGame() {
@@ -39,6 +39,7 @@ class BaseballGame {
 
 		return [...randomNum].join('')
 	}
+
 	isValidInput(userInput) {
 		if (!this.hasOnlyNumber(userInput)) {
 			alert(ERROR_MSG.TYPE_ERR)
@@ -80,6 +81,7 @@ class BaseballGame {
 		}
 		return true
 	}
+
 	getStrikeCount(computerInput, userInput) {
 		let strikeCount = 0
 		for (let i = 0; i < MAX_NUMBER_LENGTH; i++) {
@@ -103,11 +105,12 @@ class BaseballGame {
 		return `${ballCount}볼`
 	}
 	play(computerInput, userInput) {
-		let strikeCount = this.getStrikeCount(computerInput, userInput)
-		let ballCount = this.getBallCount(computerInput, userInput) - strikeCount
+		this.strikeCount = this.getStrikeCount(computerInput, userInput)
+		this.ballCount = this.getBallCount(computerInput, userInput) - this.strikeCount
 
-		return this.getGameResultMsg(strikeCount, ballCount)
+		return this.getGameResultMsg(this.strikeCount, this.ballCount)
 	}
+
 	updateGameResult() {
 		const userInput = $USER_INPUT.value
 		if (this.isValidInput(userInput)) {
