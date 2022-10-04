@@ -4,8 +4,7 @@ import { ERROR_MSG, GAME_WIN_MSG } from './constants/message.js'
 
 class BaseballGame {
 	constructor() {
-		this.computerInput
-		this.init()
+		this.initGame()
 
 		$SUBMIT_BUTTON.addEventListener('click', e => {
 			e.preventDefault()
@@ -16,15 +15,21 @@ class BaseballGame {
 		})
 
 		$RESTART_BUTTON.addEventListener('click', e => {
-			this.init()
+			this.initGame()
 		})
 	}
 
-	init() {
-		this.hideRestartButton()
-		$RESULT.innerHTML = '게임을 시작하세요!'
-		$USER_INPUT.value = ''
+	initGame() {
 		this.computerInput = this.getComputerInput()
+		this.hideRestartButton()
+		this.initUserInput()
+		this.initResultText()
+	}
+	initUserInput() {
+		$USER_INPUT.value = ''
+	}
+	initResultText() {
+		$RESULT.innerHTML = '게임을 시작하세요!'
 	}
 	getComputerInput() {
 		let randomNum = new Set()
@@ -103,17 +108,17 @@ class BaseballGame {
 
 		return this.getGameResultMsg(strikeCount, ballCount)
 	}
-	showRestartButton() {
-		$RESTART_BUTTON.style.display = 'block'
-	}
-	hideRestartButton() {
-		$RESTART_BUTTON.style.display = 'none'
-	}
 	updateGameResult() {
 		const userInput = $USER_INPUT.value
 		if (this.isValidInput(userInput)) {
 			$RESULT.innerHTML = this.play(this.computerInput, userInput)
 		}
+	}
+	showRestartButton() {
+		$RESTART_BUTTON.style.display = 'block'
+	}
+	hideRestartButton() {
+		$RESTART_BUTTON.style.display = 'none'
 	}
 }
 
