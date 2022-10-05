@@ -7,7 +7,18 @@ class BaseballGame {
 	constructor() {
 		this.computer = new Computer()
 		this.initGame()
+		this.initDomEvents()
+	}
 
+	initGame() {
+		this.computer.computerInput = this.computer.generateComputerInput()
+		this.initView()
+	}
+	initDomEvents() {
+		this.initSubmitButtonClickEvent()
+		this.initRestartButtonClickEvent()
+	}
+	initSubmitButtonClickEvent() {
 		$SUBMIT_BUTTON.addEventListener('click', e => {
 			e.preventDefault()
 			const computerInput = this.computer.computerInput
@@ -15,15 +26,15 @@ class BaseballGame {
 			const gameResultMsg = this.play(computerInput, userInput)
 			$RESULT.innerText = gameResultMsg
 		})
-
+	}
+	initRestartButtonClickEvent() {
 		$RESTART_BUTTON.addEventListener('click', () => this.initGame())
 	}
 
-	initGame() {
-		this.computer.computerInput = this.computer.generateComputerInput()
-		this.hideRestartButton()
+	initView() {
 		this.initUserInput()
 		this.initResultText()
+		this.hideRestartButton()
 	}
 	initUserInput() {
 		$USER_INPUT.value = ''
@@ -31,7 +42,16 @@ class BaseballGame {
 	initResultText() {
 		$RESULT.innerHTML = '게임을 시작하세요!'
 	}
+	showRestartButton() {
+		$RESTART_BUTTON.style.display = 'block'
+	}
+	hideRestartButton() {
+		$RESTART_BUTTON.style.display = 'none'
+	}
 
+	showInputErrorAlert(type) {
+		alert(ERROR_MSG[type])
+	}
 	isValidInput(userInput) {
 		if (!this.hasOnlyNumber(userInput)) {
 			return { isValid: false, type: 'TYPE_ERR' }
@@ -92,6 +112,7 @@ class BaseballGame {
 		const { isValid, type } = this.isValidInput(userInput)
 		if (!isValid) {
 			this.showInputErrorAlert(type)
+			this.initUserInput()
 			return $RESULT.innerText
 		}
 
@@ -102,16 +123,6 @@ class BaseballGame {
 		}
 
 		return this.getGameResultMsg(strikeCount, ballCount)
-	}
-
-	showInputErrorAlert(type) {
-		alert(ERROR_MSG[type])
-	}
-	showRestartButton() {
-		$RESTART_BUTTON.style.display = 'block'
-	}
-	hideRestartButton() {
-		$RESTART_BUTTON.style.display = 'none'
 	}
 }
 
