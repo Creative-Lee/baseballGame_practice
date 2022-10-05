@@ -1,4 +1,11 @@
-import { $APP, $SUBMIT_BUTTON, $USER_INPUT, $RESULT, $RESTART_BUTTON } from './constants/dom.js'
+import {
+	$APP,
+	$SUBMIT_BUTTON,
+	$USER_INPUT,
+	$RESULT,
+	$RESTART_BUTTON,
+	$RESTART_DIV,
+} from './constants/dom.js'
 import { MAX_NUMBER_RANGE, MIN_NUMBER_RANGE, MAX_NUMBER_LENGTH } from './constants/condition.js'
 import { ERROR_MSG, GAME_WIN_MSG } from './constants/message.js'
 import generateComputerInput from './computer.js'
@@ -33,7 +40,7 @@ class BaseballGame {
 	initView() {
 		this.initUserInput()
 		this.initResultText()
-		this.hideRestartButton()
+		this.hideRestartDiv()
 	}
 	initUserInput() {
 		$USER_INPUT.value = ''
@@ -41,13 +48,12 @@ class BaseballGame {
 	initResultText() {
 		$RESULT.innerHTML = '게임을 시작하세요!'
 	}
-	showRestartButton() {
-		$RESTART_BUTTON.style.display = 'block'
+	showRestartDiv() {
+		$RESTART_DIV.style.display = 'block'
 	}
-	hideRestartButton() {
-		$RESTART_BUTTON.style.display = 'none'
+	hideRestartDiv() {
+		$RESTART_DIV.style.display = 'none'
 	}
-
 	showInputErrorAlert(type) {
 		alert(ERROR_MSG[type])
 	}
@@ -117,7 +123,7 @@ class BaseballGame {
 
 		const [strikeCount, ballCount] = this.getStrikeBallCount(computerInput, userInput)
 		if (strikeCount === MAX_NUMBER_LENGTH) {
-			this.showRestartButton()
+			this.showRestartDiv()
 			return GAME_WIN_MSG
 		}
 
