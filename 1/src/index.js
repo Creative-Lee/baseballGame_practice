@@ -1,4 +1,4 @@
-import { $SUBMIT_BUTTON, $USER_INPUT, $RESULT, $RESTART_BUTTON } from './constants/dom.js'
+import { $APP, $SUBMIT_BUTTON, $USER_INPUT, $RESULT, $RESTART_BUTTON } from './constants/dom.js'
 import { MAX_NUMBER_RANGE, MIN_NUMBER_RANGE, MAX_NUMBER_LENGTH } from './constants/condition.js'
 import { ERROR_MSG, GAME_WIN_MSG } from './constants/message.js'
 import Computer from './computer.js'
@@ -15,20 +15,19 @@ class BaseballGame {
 		this.initView()
 	}
 	initDomEvents() {
-		this.initSubmitButtonClickEvent()
-		this.initRestartButtonClickEvent()
-	}
-	initSubmitButtonClickEvent() {
-		$SUBMIT_BUTTON.addEventListener('click', e => {
-			e.preventDefault()
-			const computerInput = this.computer.computerInput
-			const userInput = $USER_INPUT.value
-			const gameResultMsg = this.play(computerInput, userInput)
-			$RESULT.innerText = gameResultMsg
+		$APP.addEventListener('click', e => {
+			if (!e.target) return
+			if (e.target === $SUBMIT_BUTTON) {
+				e.preventDefault()
+				const computerInput = this.computer.computerInput
+				const userInput = $USER_INPUT.value
+				const gameResultMsg = this.play(computerInput, userInput)
+				$RESULT.innerText = gameResultMsg
+			}
+			if (e.target === $RESTART_BUTTON) {
+				this.initGame()
+			}
 		})
-	}
-	initRestartButtonClickEvent() {
-		$RESTART_BUTTON.addEventListener('click', () => this.initGame())
 	}
 
 	initView() {
