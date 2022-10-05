@@ -10,11 +10,10 @@ class BaseballGame {
 
 		$SUBMIT_BUTTON.addEventListener('click', e => {
 			e.preventDefault()
-			this.updateGameResult()
-			this.isGameOver = this.strikeCount === MAX_NUMBER_LENGTH
-			if (this.isGameOver) {
-				this.showRestartButton()
-			}
+			const computerInput = this.computer.computerInput
+			const userInput = $USER_INPUT.value
+			const gameResultMsg = this.play(computerInput, userInput)
+			$RESULT.innerText = gameResultMsg
 		})
 
 		$RESTART_BUTTON.addEventListener('click', () => this.initGame())
@@ -22,9 +21,6 @@ class BaseballGame {
 
 	initGame() {
 		this.computer.computerInput = this.computer.generateComputerInput()
-		this.strikeCount = 0
-		this.ballCount = 0
-		this.isGameOver = false
 		this.hideRestartButton()
 		this.initUserInput()
 		this.initResultText()
@@ -38,22 +34,18 @@ class BaseballGame {
 
 	isValidInput(userInput) {
 		if (!this.hasOnlyNumber(userInput)) {
-			alert(ERROR_MSG.TYPE_ERR)
-			return false
+			return { isValid: false, type: 'TYPE_ERR' }
 		}
 		if (!this.hasValidLength(userInput)) {
-			alert(ERROR_MSG.LENGTH_ERR)
-			return false
+			return { isValid: false, type: 'LENGTH_ERR' }
 		}
 		if (!this.hasUniqueNumber(userInput)) {
-			alert(ERROR_MSG.REPEATED_NUM_ERR)
-			return false
+			return { isValid: false, type: 'REPEATED_NUM_ERR' }
 		}
 		if (!this.hasValidRangeNumber(userInput)) {
-			alert(ERROR_MSG.RANGE_ERR)
-			return false
+			return { isValid: false, type: 'RANGE_ERR' }
 		}
-		return true
+		return { isValid: true }
 	}
 	hasOnlyNumber(userInput) {
 		const splitedUserInput = userInput.split('')
@@ -94,25 +86,32 @@ class BaseballGame {
 		return ballCount
 	}
 	getGameResultMsg(strikeCount, ballCount) {
-		if (strikeCount === MAX_NUMBER_LENGTH) return GAME_WIN_MSG
 		if (!strikeCount && !ballCount) return `낫싱`
 		if (strikeCount && ballCount) return `${ballCount}볼 ${strikeCount}스트라이크`
 		if (strikeCount && !ballCount) return `${strikeCount}스트라이크`
 		return `${ballCount}볼`
 	}
+
 	play(computerInput, userInput) {
-		this.strikeCount = this.getStrikeCount(computerInput, userInput)
-		this.ballCount = this.getBallCount(computerInput, userInput) - this.strikeCount
-
-		return this.getGameResultMsg(this.strikeCount, this.ballCount)
-	}
-	updateGameResult() {
-		const userInput = $USER_INPUT.value
-		if (this.isValidInput(userInput)) {
-			$RESULT.innerHTML = this.play(this.computer.computerInput, userInput)
+		const { isValid, type } = this.isValidInput(userInput)
+		if (!isValid) {
+			this.showInputErrorAlert(type)
+			return $RESULT.innerText
 		}
+
+		const strikeCount = this.getStrikeCount(computerInput, userInput)
+		const ballCount = this.getBallCount(computerInput, userInput) - strikeCount
+		if (strikeCount === MAX_NUMBER_LENGTH) {
+			this.showRestartButton()
+			return GAME_WIN_MSG
+		}
+
+		return this.getGameResultMsg(strikeCount, ballCount)
 	}
 
+	showInputErrorAlert(type) {
+		alert(ERROR_MSG[type])
+	}
 	showRestartButton() {
 		$RESTART_BUTTON.style.display = 'block'
 	}
