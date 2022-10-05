@@ -1,17 +1,17 @@
 import { $APP, $SUBMIT_BUTTON, $USER_INPUT, $RESULT, $RESTART_BUTTON } from './constants/dom.js'
 import { MAX_NUMBER_RANGE, MIN_NUMBER_RANGE, MAX_NUMBER_LENGTH } from './constants/condition.js'
 import { ERROR_MSG, GAME_WIN_MSG } from './constants/message.js'
-import Computer from './computer.js'
+import generateComputerInput from './computer.js'
 
 class BaseballGame {
 	constructor() {
-		this.computer = new Computer()
+		this.computerInput
 		this.initGame()
 		this.initDomEvents()
 	}
 
 	initGame() {
-		this.computer.computerInput = this.computer.generateComputerInput()
+		this.computerInput = generateComputerInput()
 		this.initView()
 	}
 	initDomEvents() {
@@ -19,7 +19,7 @@ class BaseballGame {
 			if (!e.target) return
 			if (e.target === $SUBMIT_BUTTON) {
 				e.preventDefault()
-				const computerInput = this.computer.computerInput
+				const computerInput = this.computerInput
 				const userInput = $USER_INPUT.value
 				const gameResultMsg = this.play(computerInput, userInput)
 				$RESULT.innerText = gameResultMsg
