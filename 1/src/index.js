@@ -1,9 +1,11 @@
 import { $SUBMIT_BUTTON, $USER_INPUT, $RESULT, $RESTART_BUTTON } from './constants/dom.js'
 import { MAX_NUMBER_RANGE, MIN_NUMBER_RANGE, MAX_NUMBER_LENGTH } from './constants/condition.js'
 import { ERROR_MSG, GAME_WIN_MSG } from './constants/message.js'
+import Computer from './computer.js'
 
 class BaseballGame {
 	constructor() {
+		this.computer = new Computer()
 		this.initGame()
 
 		$SUBMIT_BUTTON.addEventListener('click', e => {
@@ -19,7 +21,7 @@ class BaseballGame {
 	}
 
 	initGame() {
-		this.computerInput = this.generateComputerInput()
+		this.computer.computerInput = this.computer.generateComputerInput()
 		this.strikeCount = 0
 		this.ballCount = 0
 		this.isGameOver = false
@@ -32,14 +34,6 @@ class BaseballGame {
 	}
 	initResultText() {
 		$RESULT.innerHTML = '게임을 시작하세요!'
-	}
-	generateComputerInput() {
-		let randomNum = new Set()
-		while (randomNum.size !== MAX_NUMBER_LENGTH) {
-			randomNum.add(MissionUtils.Random.pickNumberInRange(MIN_NUMBER_RANGE, MAX_NUMBER_RANGE))
-		}
-
-		return [...randomNum].join('')
 	}
 
 	isValidInput(userInput) {
@@ -115,7 +109,7 @@ class BaseballGame {
 	updateGameResult() {
 		const userInput = $USER_INPUT.value
 		if (this.isValidInput(userInput)) {
-			$RESULT.innerHTML = this.play(this.computerInput, userInput)
+			$RESULT.innerHTML = this.play(this.computer.computerInput, userInput)
 		}
 	}
 
