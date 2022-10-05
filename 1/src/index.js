@@ -70,20 +70,17 @@ class BaseballGame {
 		return true
 	}
 
-	getStrikeCount(computerInput, userInput) {
+	getStrikeBallCount(computerInput, userInput) {
 		let strikeCount = 0
+		let ballCount = 0
 		for (let i = 0; i < MAX_NUMBER_LENGTH; i++) {
 			if (computerInput[i] === userInput[i]) strikeCount++
 		}
-
-		return strikeCount
-	}
-	getBallCount(computerInput, userInput) {
-		let ballCount = 0
 		for (let num of userInput) {
 			if (computerInput.includes(num)) ballCount++
 		}
-		return ballCount
+		ballCount -= strikeCount
+		return [strikeCount, ballCount]
 	}
 	getGameResultMsg(strikeCount, ballCount) {
 		if (!strikeCount && !ballCount) return `낫싱`
@@ -91,7 +88,6 @@ class BaseballGame {
 		if (strikeCount && !ballCount) return `${strikeCount}스트라이크`
 		return `${ballCount}볼`
 	}
-
 	play(computerInput, userInput) {
 		const { isValid, type } = this.isValidInput(userInput)
 		if (!isValid) {
@@ -99,8 +95,7 @@ class BaseballGame {
 			return $RESULT.innerText
 		}
 
-		const strikeCount = this.getStrikeCount(computerInput, userInput)
-		const ballCount = this.getBallCount(computerInput, userInput) - strikeCount
+		const [strikeCount, ballCount] = this.getStrikeBallCount(computerInput, userInput)
 		if (strikeCount === MAX_NUMBER_LENGTH) {
 			this.showRestartButton()
 			return GAME_WIN_MSG
